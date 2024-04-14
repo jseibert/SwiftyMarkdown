@@ -447,7 +447,7 @@ extension SwiftyMarkdown {
 		
 		var finalTokens = tokens
 		let finalAttributedString = NSMutableAttributedString()
-		var attributes : [NSAttributedString.Key : AnyObject] = [:]
+		var attributes : [NSAttributedString.Key : Any] = [:]
 	
 		guard let markdownLineStyle = line.lineStyle as? MarkdownLineStyle else {
 			preconditionFailure("The passed line style is not a valid Markdown Line Style")
@@ -574,7 +574,7 @@ extension SwiftyMarkdown {
                 let url = URL(string: token.metadataStrings[linkIdx]) {
                 attributes[.foregroundColor] = self.link.color
                 attributes[.font] = self.font(for: line, characterOverride: .link)
-                attributes[.link] = url as NSURL
+                attributes[.link] = url.absoluteString
                 
                 if underlineLinks {
                     attributes[.underlineStyle] = self.link.underlineStyle.rawValue as AnyObject
