@@ -569,10 +569,12 @@ extension SwiftyMarkdown {
 				attributes[.foregroundColor] = self.bold.color
 			}
 			
-            if let linkIdx = styles.firstIndex(of: .link), linkIdx < token.metadataStrings.count {
+            if let linkIdx = styles.firstIndex(of: .link), 
+                linkIdx < token.metadataStrings.count,
+                let url = URL(string: token.metadataStrings[linkIdx]) {
                 attributes[.foregroundColor] = self.link.color
                 attributes[.font] = self.font(for: line, characterOverride: .link)
-                attributes[.link] = token.metadataStrings[linkIdx] as AnyObject
+                attributes[.link] = url as NSURL
                 
                 if underlineLinks {
                     attributes[.underlineStyle] = self.link.underlineStyle.rawValue as AnyObject
