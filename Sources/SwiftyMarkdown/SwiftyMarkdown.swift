@@ -425,7 +425,15 @@ If that is not set, then the system default will be used.
 		
 		for (idx, line) in referencesRemoved.enumerated() {
 			if idx > 0 {
-				attributedString.append(NSAttributedString(string: "\n"))
+				// Carry attributes from preceding text so the paragraph separator
+				// has consistent font metrics and paragraph styling. A bare "\n"
+				// causes Core Text to use default system font metrics, leading to
+				// misaligned baselines and inconsistent line spacing in table cells.
+				var newlineAttrs: [NSAttributedString.Key: Any] = [:]
+				if attributedString.length > 0 {
+					newlineAttrs = attributedString.attributes(at: attributedString.length - 1, effectiveRange: nil)
+				}
+				attributedString.append(NSAttributedString(string: "\n", attributes: newlineAttrs))
 			}
 			let finalTokens = self.tokeniser.process(line.line)
 			self.previouslyFoundTokens.append(contentsOf: finalTokens)
